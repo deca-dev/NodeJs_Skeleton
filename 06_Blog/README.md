@@ -1,24 +1,50 @@
-#Skeleton
+#Blog API
 
-- Express
-- PostgreSQL
-- Sequelize ORM
-- Autenticación con Tokens
-- Bcrypt para hashear contraseñas
-- Uso de Json Web Token
+- Front:
+    - Get all posts
+    - Get specific post
+    - Get all categories
+    - Get posts filtered by category
+    - Get all post created by logged user
+    - Get all post filtered by user
+    - Pagination of posts
+    - CRUD on posts
+    - Create categories
 
--------
-- Rutas de Login y creación de usuario (register)
-- Herramientas para publicar imágenes de perfil
-- CRUD de usuarios con autenticación y manejo de permisos
+    ```json
+    {
+        "total": 68,
+        "prev" : 'localhost:9000/api/v1/posts?offset=51&limit=60',
+        "next" : 'localhost:9000/api/v1/posts?offset=61&limit=68',
+        "data" : [
+            {
+                "id" : 1,
+                "title": "example",
+                "content" : "Lorem ipsum",
+                "createdBy" : {
+                    "id" : "20",
+                    "name": "Jane Doe",
+                    "email": "test@test.com"
+                },
+                "category": {
+                    "id" : 4,
+                    "name": "Technology"
+                }
+            }
+        ]
+    }
 
+/api/v1
 
-Orden
-1. app.js
-2. .env
-3. config.js
-4. database.js
-5. modelos
-6. controladores
-7. servicios
-8. rutas
+/users
+    - /me
+    - /me/posts
+    - /me/posts/:id
+    - /:id
+
+/categories
+    - /:id
+    - /:id/posts
+
+/posts
+    - /:id
