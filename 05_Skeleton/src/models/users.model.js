@@ -12,7 +12,7 @@ const Users = db.define('users' , {
         allowNull: false, 
         field: 'first_name'
     },
-    LastName : {
+    lastName : {
         type: DataTypes.STRING,
         allowNull: false, 
         field: 'last_name'

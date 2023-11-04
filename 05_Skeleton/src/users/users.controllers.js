@@ -27,7 +27,7 @@ const createUser = async(data) => {
         phone: data.phone,
         birthday: data.birthday,
         gender: data.gender,
-        country: data.country,
+        country: data.country
     })
     return newUser
 };
@@ -48,12 +48,22 @@ const deleteUser = async(id) => {
         }
     })
     return data
-}
+};
+
+const getUserByEmail = async(email) => {
+    const data = await Users.findOne({
+        where: {
+            email
+        }
+    })
+    return data
+};
 
 module.exports ={
     getAllUsers,
     getUserById,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUserByEmail
 }
