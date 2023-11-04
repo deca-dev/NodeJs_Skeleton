@@ -47,7 +47,7 @@ const registerUser = (req, res) => {
 
 const patchUser = (req, res) => { //? Password change will be through email request
     const id = req.params.id;
-    const { firstName, lastName, phone, birthday, gender, country } = req.body; //? Only params that the user can modify (Except role, password, email, status and isVerified)
+    const {firstName, lastName, phone, birthday, gender, country } = req.body; //? Only params that the user can modify (Except role, password, email, status and isVerified)
     usersControllers.updateUser(id, { firstName, lastName, phone, birthday, gender, country })
         .then(data => {
             if (data[0]) { //? Validation if update was done (controller returns an array with # of modified rows)
@@ -89,11 +89,36 @@ const getMyUser = (req, res) => {
         })
 }
 
+const patchMyUser = (req, res) => {
+    const id = req.user.id;
+    const {firstName, lastName, phone, birthday, gender, country} = req.body;
+    usersControllers.updateUser({firstName, lastName, phone, birthday, gender, country})
+        .then(resposnse => {
+            res.status(200).json({message: 'User information updated!'})
+        })
+        .catch(err => {
+            res.status(400).json(err.message)
+        })
+}
+
+const deleteMyUser = (req, res) => {
+    const id = req.user.id;
+    usersControllers.updateUser(id, {status: 'inactive'})
+        .then(data => {
+            res.status(200).json({message: 'User deleted'})
+        })
+        .catch(err => {
+            res.status(400).json({message: err.message})
+        })
+}
+
 module.exports = {
     getAllUsers,
     getUserById,
     patchUser,
     registerUser,
     deleteUser,
-    getMyUser
+    getMyUser,
+    patchMyUser,
+    deleteMyUser
 }

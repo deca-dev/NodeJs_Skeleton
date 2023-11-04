@@ -13,7 +13,6 @@ const loginUser = async (email, password) => { //? Receives email and plain Pass
         return error
        }
 };
-
    
 module.exports = {
     loginUser 

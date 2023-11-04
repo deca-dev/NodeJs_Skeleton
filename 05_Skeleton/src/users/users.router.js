@@ -1,6 +1,7 @@
-const usersServices = require('./users.services')
-const router = require('express').Router()
+const usersServices = require('./users.services');
+const router = require('express').Router();
 const passport = require('passport');
+const adminValidate = require('../middlewares/rol.middleware');
 
 require('../middlewares/auth.middleware')(passport)
 
@@ -8,18 +9,17 @@ require('../middlewares/auth.middleware')(passport)
 
 router.get('/',usersServices.getAllUsers);
 
-//? Routes for each user
+//? Protected routes for each user
 router.route('/me')
-    .get(passport.authenticate('jwt', {session:false}),
-    usersServices.getMyUser)
-    .patch()
-    .delete()
+    .get(passport.authenticate('jwt', {session:false}), usersServices.getMyUser)
+    .patch(passport.authenticate('jwt', {session: false}), usersServices.patchMyUser)
+    .delete(passport.authenticate('jwt', {session: false}), usersServices.deleteMyUser)
 
-//? Dynamic Routes by Id
+//? Dynamic Routes by Id, restricted by middleware validation (adminValidate) if user is admin (passport.authenticate sets the req.user with the decrypted token info)
 router.route('/:id')
     .get(usersServices.getUserById)
-    .patch(usersServices.patchUser)
-    .delete(usersServices.deleteUser)
+    .patch(passport.authenticate('jwt', {session: false}),adminValidate,usersServices.patchUser)
+    .delete(passport.authenticate('jwt', {session: false}),adminValidate,usersServices.deleteUser)
 
 
 module.exports = router

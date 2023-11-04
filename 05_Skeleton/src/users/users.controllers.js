@@ -11,7 +11,8 @@ const getAllUsers = async() => {
 const getUserById = async(id) => {
     const data = await Users.findOne({
         where: {
-            id
+            id,
+            status: 'active'
         }
     })
     return data;
@@ -53,7 +54,8 @@ const deleteUser = async(id) => {
 const getUserByEmail = async(email) => {
     const data = await Users.findOne({
         where: {
-            email
+            email,
+            status: 'active'
         }
     })
     return data
