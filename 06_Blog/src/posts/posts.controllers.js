@@ -8,14 +8,17 @@ const getAllPosts = async() => {
     const data = await Posts.findAll({
         include:[ //? Making joins
             {
-                model: Users 
+                model: Users,
+                attributes: {
+                    exclude: ['password','updatedAt', 'createdAt', 'role', 'phone']
+                }
             },
             {
                 model: Categories
             }
         ],
         attributes : {
-            exclude: ['createdAt', 'updatedAt', 'categoryId'] //? Exclude data to not show it
+            exclude: ['createdAt', 'updatedAt', 'categoryId','userId'] //? Exclude data to not show it
         }
     });
     return data;
@@ -25,6 +28,20 @@ const getPostById = async(id) => {
     const data = await Posts.findOne({
         where: {
             id
+        },
+        include:[ //? Making joins
+            {
+                model: Users,
+                attributes: {
+                    exclude: ['password','updatedAt', 'createdAt', 'role', 'phone']
+                }
+            },
+            {
+                model: Categories
+            }
+        ],
+        attributes : {
+            exclude: ['createdAt', 'updatedAt', 'categoryId','userId'] //? Exclude data to not show it
         }
     })
     return data;
@@ -35,7 +52,7 @@ const createPost = async(data) => {
         id: uuid.v4(),
         title: data.title,
         content: data.content,
-        createdBy: data.userId,
+        userId: data.userId,
         categoryId: data.categoryId
     })
     return newPost
@@ -59,6 +76,14 @@ const deletePost = async(id) => {
     return data
 };
 
+const getPostsByCategory = async (categoryId) => {
+    const data = await Posts.findAll({
+        where: {
+            categoryId
+        }
+    })
+    return data
+}
 
 
 module.exports ={
@@ -67,5 +92,5 @@ module.exports ={
     createPost,
     updatePost,
     deletePost,
-   
+    getPostsByCategory
 }
